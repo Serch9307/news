@@ -2,7 +2,10 @@ import React from 'react';
 import MyNew from './MyNew';
 import PropTypes from 'prop-types';
 
-const ListNews = ({news}) => (
+const ListNews = ({news}) => {
+    if (!news) return null;
+    
+    return (    
     <div className="row">
         {news.map(mynew => (
             <MyNew 
@@ -12,7 +15,7 @@ const ListNews = ({news}) => (
         ))}
         
     </div>
-);
+)};
 ListNews.propTypes = {
     news: PropTypes.array.isRequired
 } 
