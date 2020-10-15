@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState, useEffect } from "react";
+import Header from "./components/Header";
+import Form from "./components/Form";
+import ListNews from "./components/ListNews";
 
 function App() {
+  // state of category
+  const [category, setCategory] = useState("");
+  const [news, setNews] = useState([]);
+
+  // call api when category is not empty
+  useEffect(() => {
+    if (category === "") return;
+    let apiNew = async () => {
+      const url = `https://newsapi.org/v2/top-headlines?country=mx&${category}=business&apiKey=a9bed41bebeb40c99c71dfea8454e3f8`;
+      const result = await fetch(url);
+      const resultNews = await result.json();
+      setNews(resultNews.articles);
+    };
+    apiNew();    
+  }, [category]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Header title="News search engine!" />
+      <div className="container white">
+        <Form setCategory={setCategory} />
+        <ListNews news={news} />
+      </div>
+    </Fragment>
   );
 }
 
